@@ -5,5 +5,5 @@ public interface IFileRef
     string Bucket { get; }
     string Key { get; }
     Task<Stream> OpenRead();
-    Task Delete();
+    Task<bool> Delete();
 }

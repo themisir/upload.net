@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Upload.Core", "Upload.Core\Upload.Core.csproj", "{38E99AFD-8E3E-4D17-8953-A39BADF8A109}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Upload.Disk", "Upload.Disk\Upload.Disk.csproj", "{D20FF665-F7C9-4805-B3C9-35A02ACEB71A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{38E99AFD-8E3E-4D17-8953-A39BADF8A109}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38E99AFD-8E3E-4D17-8953-A39BADF8A109}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38E99AFD-8E3E-4D17-8953-A39BADF8A109}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D20FF665-F7C9-4805-B3C9-35A02ACEB71A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D20FF665-F7C9-4805-B3C9-35A02ACEB71A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D20FF665-F7C9-4805-B3C9-35A02ACEB71A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D20FF665-F7C9-4805-B3C9-35A02ACEB71A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
