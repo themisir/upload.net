@@ -1,19 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <PackageId>Upload.AwsS3</PackageId>
+        <RepositoryUrl>https://github.com/themisir/upload.net</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.2" />
-      <PackageReference Include="AWSSDK.S3" Version="3.7.101.33" />
-      <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.0" />
+        <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.2" />
+        <PackageReference Include="AWSSDK.S3" Version="3.7.101.33" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Upload.Core\Upload.Core.csproj" />
+        <ProjectReference Include="..\Upload.Core\Upload.Core.csproj" />
     </ItemGroup>
 
 </Project>
