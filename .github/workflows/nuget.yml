@@ -6,46 +6,34 @@ on:
 
 jobs:
   build:
+    
     runs-on: ubuntu-latest
+    
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
+    - name: Setup GitVersion
+      uses: gittools/actions/gitversion/setup@v0.9.7
+      with:
+        versionSpec: '5.x'
+    - name: Determine Version
+      id: gitversion
+      uses: gittools/actions/gitversion/execute@v0.9.7
+      with:
+        useConfigFile: true
+        configFilePath: ./.github/gitversion.yml
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --configuration Release /p:Version=${{ steps.gitversion.outputs.AssemblySemVer }} /p:AssemblyVersion=${{ steps.gitversion.outputs.AssemblySemVer }} /p:InformationalVersion=${{ steps.gitversion.outputs.InformationalVersion }} --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
-      
-  publish:
-    needs: [ build ]
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        package:
-          - "Upload.Core"
-          - "Upload.Disk"
-          - "Upload.AwsS3"
-    steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 7.0.x
-    - name: Update Version
-      uses: justalemon/VersionPatcher@v0.5
-      with:
-        version: ${{ github.ref }}
-        trim: true
-        use-tag: true
-        csproj-files: src/**/*.csproj
+    - name: Package
+      run: dotnet pack --configuration release -o:package /p:PackageVersion=${{ steps.gitversion.outputs.AssemblySemVer }}
     - name: Publish
-      uses: brandedoutcast/publish-nuget@v2.5.5
-      with:
-        PROJECT_FILE_PATH: src/${{ matrix.package }}/${{ matrix.package }}.csproj
-        PACKAGE_NAME: ${{ matrix.package }}
-        NUGET_KEY: ${{ secrets.NUGET_TOKEN }}
-        INCLUDE_SYMBOLS: true
+      run: dotnet nuget push ./package/*.nupkg --source https://api.nuget.org --api-key ${{ secrets.NUGET_TOKEN }}
