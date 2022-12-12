@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Upload.Core.Test", "tests\U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Upload.Web.Sample", "src\Upload.Web.Sample\Upload.Web.Sample.csproj", "{C98F2265-8558-4E6D-A25A-A043C719615B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Upload.AwsS3", "src\Upload.AwsS3\Upload.AwsS3.csproj", "{D2D94B77-9DD9-4AA6-8BEA-9C46DAB0B876}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{C98F2265-8558-4E6D-A25A-A043C719615B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C98F2265-8558-4E6D-A25A-A043C719615B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C98F2265-8558-4E6D-A25A-A043C719615B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2D94B77-9DD9-4AA6-8BEA-9C46DAB0B876}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2D94B77-9DD9-4AA6-8BEA-9C46DAB0B876}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2D94B77-9DD9-4AA6-8BEA-9C46DAB0B876}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2D94B77-9DD9-4AA6-8BEA-9C46DAB0B876}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{48BF459E-DCFA-452D-A9F6-EC53E1D40738} = {3FD0597A-B3FC-47CA-8953-426E101D9D0D}
