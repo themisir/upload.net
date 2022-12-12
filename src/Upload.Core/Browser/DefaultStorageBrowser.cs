@@ -5,16 +5,16 @@ namespace Upload.Core.Browser;
 
 public sealed class DefaultStorageBrowser : IStorageBrowser
 {
-    private readonly IOptions<DefaultStorageBrowserSettings> _settings;
+    private readonly IOptions<DefaultStorageBrowserOptions> _options;
 
-    public DefaultStorageBrowser(IOptions<DefaultStorageBrowserSettings> settings)
+    public DefaultStorageBrowser(IOptions<DefaultStorageBrowserOptions> options)
     {
-        _settings = settings;
+        _options = options;
     }
 
     public string GetFileUrl(string fileKey)
     {
-        var url = _settings.Value.UrlFormat.Replace("{key}", fileKey);
+        var url = _options.Value.UrlFormat.Replace("{key}", fileKey);
         return url;
     }
 }

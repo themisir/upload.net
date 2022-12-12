@@ -1,7 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
-using Upload.Core.Service;
 
-namespace Upload.Core;
+namespace Upload.Core.Service;
 
 public sealed class StorageBuilder
 {

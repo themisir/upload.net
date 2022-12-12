@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Upload.Core.Browser;
+using Upload.Core.Service;
 
 namespace Upload.Core;
 

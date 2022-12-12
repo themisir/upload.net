@@ -71,7 +71,7 @@ public sealed class DiskBackendTests
     
     private static IStorageProvider CreateBackend(string dir)
     {
-        return new DiskProvider(new DiskProviderSettings
+        return new DiskProvider(new DiskProviderOptions
         {
             Directory = dir,
         });

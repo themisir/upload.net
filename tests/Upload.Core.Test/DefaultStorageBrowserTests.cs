@@ -20,7 +20,7 @@ public class DefaultStorageBrowserTests
     private static IStorageBrowser CreateBrowser(string format)
     {
         return new ServiceCollection()
-            .Configure<DefaultStorageBrowserSettings>(options =>
+            .Configure<DefaultStorageBrowserOptions>(options =>
             {
                 options.UrlFormat = format;
             })
