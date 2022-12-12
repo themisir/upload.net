@@ -11,7 +11,13 @@ public sealed class StorageBuilder
         Services = services;
     }
 
-    public StorageBuilder AddBackend(string name, IStorageProvider provider)
+    /// <summary>
+    /// Register a storage provider with given <paramref name="name"/>.
+    /// </summary>
+    /// <param name="name">Unique provider name</param>
+    /// <param name="provider">An instance of the provider</param>
+    /// <returns>Self reference for chaining commands</returns>
+    public StorageBuilder AddProvider(string name, IStorageProvider provider)
     {
         Services.Configure<StorageManagerOptions>(options =>
         {

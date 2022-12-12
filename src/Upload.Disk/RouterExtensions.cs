@@ -20,7 +20,7 @@ public static class RouterExtensions
 
         throw new ApplicationException($"There is no DiskProvider registered with name '{providerName}'");
     }
-    
+
     public static IEndpointConventionBuilder MapStaticFiles(this IEndpointRouteBuilder endpoints, string path, string rootDirectory)
     {
         var pattern = Path.Join(path, "{**slug}");

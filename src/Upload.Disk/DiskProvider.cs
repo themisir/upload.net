@@ -43,7 +43,7 @@ public sealed class DiskProvider : IStorageProvider
     private DiskFileRef CreateRef(string key)
     {
         KeyUtils.MushBeSafeKey(key);
-        var normalizedKey = KeyUtils.NormalizeKey(key);
+        var normalizedKey = NormalizeKey(key);
         var path = Path.Combine(Options.Directory, normalizedKey);
         var url = Browser?.GetFileUrl(normalizedKey);
         return new DiskFileRef(path, normalizedKey, url);
@@ -59,5 +59,20 @@ public sealed class DiskProvider : IStorageProvider
 
         size = default;
         return false;
+    }
+    
+    private static string NormalizeKey(string key)
+    {
+        if (key.Length == 0) return string.Empty;
+        key = key.Replace('\\', '/');
+        if (key[0] == '/')
+        {
+            return key[^1] == '/' ? key[1..^1] : key[1..];
+        }
+        if (key[^1] == '/')
+        {
+            return key[..^1];
+        }
+        return key;
     }
 }
