@@ -45,7 +45,7 @@ public sealed class DiskBackendTests
         file.Should().NotBeNull();
         file!.Key.Should().Be("02/test.bin");
 
-        await using var stream = await file.OpenRead();
+        await using var stream = await file.OpenReadStream();
         stream.Should().BeReadable();
 
         var buff = new byte[1024];

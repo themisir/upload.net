@@ -1,5 +1,6 @@
 using Upload.Core;
 using Upload.Core.Browser;
+using Upload.Core.Web;
 using Upload.Disk;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,5 +19,7 @@ var app = builder.Build();
 app.MapGet("/", () => "Hello World!");
 
 app.MapFallbackToFile("/files", tempDir);
+
+app.MapUploadManyFiles("/uploads/disk", "disk");
 
 app.Run();

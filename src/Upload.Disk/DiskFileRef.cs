@@ -16,7 +16,7 @@ internal readonly struct DiskFileRef : IFileRef
     public string Key { get; }
     public string? Url { get; }
 
-    public ValueTask<Stream> OpenRead()
+    public ValueTask<Stream> OpenReadStream()
     {
         return ValueTask.FromResult<Stream>(new FileStream(Path, FileMode.Open));
     }

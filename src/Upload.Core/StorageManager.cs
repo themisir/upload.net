@@ -12,23 +12,23 @@ public sealed class StorageManager
         _options = options;
     }
 
-    public Task<IFileRef> CreateFile(string backend, string key, Stream sourceStream, UploadOptions? options = null)
+    public Task<IFileRef> CreateFile(string providerName, string key, Stream sourceStream, UploadOptions? options = null)
     {
-        return GetProvider(backend).CreateFile(key, sourceStream, options);
+        return GetProvider(providerName).CreateFile(key, sourceStream, options);
     }
 
-    public Task<IFileRef?> GetFile(string backend, string key)
+    public Task<IFileRef?> GetFile(string providerName, string key)
     {
-        return GetProvider(backend).GetFile(key);
+        return GetProvider(providerName).GetFile(key);
     }
 
-    private IStorageProvider GetProvider(string backend)
+    private IStorageProvider GetProvider(string providerName)
     {
-        if (_options.Value.Providers.TryGetValue(backend, out var impl))
+        if (_options.Value.Providers.TryGetValue(providerName, out var impl))
         {
             return impl;
         }
 
-        throw new ApplicationException($"Storage backend with name '{backend}' is not registered");
+        throw new ApplicationException($"Storage provider with name '{providerName}' is not registered");
     }
 }
