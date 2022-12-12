@@ -27,4 +27,10 @@ public static class KeyUtils
             throw new ApplicationException("Key should not contain '..'");
         }
     }
+
+    public static string GetUniqueKey(string name)
+    {
+        // todo: fix me
+        return name;
+    }
 }
