@@ -26,7 +26,7 @@ internal sealed class UploadHandler
 
         foreach (var file in files)
         {
-            var key = KeyUtils.GetUniqueKey(file.Name);
+            var key = KeyUtils.GetUniqueKey(file.FileName);
             
             await using var source = file.OpenReadStream();
             var fileRef = await _storageManager.CreateFile(_providerName, key, source);

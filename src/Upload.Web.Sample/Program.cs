@@ -10,16 +10,17 @@ var tempDir = Directory.CreateTempSubdirectory().FullName;
 builder.Services.AddUploadNet()
     .AddDiskBackend("disk", options =>
     {
-        options.Browser = new DefaultStorageBrowser("http://localhost:8080/files/{key}");
+        options.Browser = new DefaultStorageBrowser("http://localhost:5000/files/{key}");
         options.Directory = tempDir;
     });
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
-
-app.MapFallbackToFile("/files", tempDir);
+app.UseStaticFiles();
 
 app.MapUploadManyFiles("/uploads/disk", "disk");
+app.MapUploadedStaticFiles("/files", "disk");
+
+app.MapFallbackToFile("index.html");
 
 app.Run();

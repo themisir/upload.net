@@ -6,13 +6,13 @@ namespace Upload.Disk;
 
 public sealed class DiskProvider : IStorageProvider
 {
-    private readonly DiskProviderOptions _options;
-    private readonly IStorageBrowser? _browser;
+    internal readonly DiskProviderOptions Options;
+    internal readonly IStorageBrowser? Browser;
 
     public DiskProvider(DiskProviderOptions options)
     {
-        _options = options;
-        _browser = options.Browser;
+        Options = options;
+        Browser = options.Browser;
     }
 
     public async Task<IFileRef> CreateFile(string key, Stream sourceStream, UploadOptions? options = null)
@@ -44,8 +44,8 @@ public sealed class DiskProvider : IStorageProvider
     {
         KeyUtils.MushBeSafeKey(key);
         var normalizedKey = KeyUtils.NormalizeKey(key);
-        var path = Path.Combine(_options.Directory, normalizedKey);
-        var url = _browser?.GetFileUrl(normalizedKey);
+        var path = Path.Combine(Options.Directory, normalizedKey);
+        var url = Browser?.GetFileUrl(normalizedKey);
         return new DiskFileRef(path, normalizedKey, url);
     }
 

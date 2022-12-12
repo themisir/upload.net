@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Options;
 using Upload.Core.Service;
 
@@ -22,9 +23,14 @@ public sealed class StorageManager
         return GetProvider(providerName).GetFile(key);
     }
 
+    public bool TryGetProvider(string providerName, [MaybeNullWhen(false)] out IStorageProvider provider)
+    {
+        return _options.Value.Providers.TryGetValue(providerName, out provider);
+    }
+
     private IStorageProvider GetProvider(string providerName)
     {
-        if (_options.Value.Providers.TryGetValue(providerName, out var impl))
+        if (TryGetProvider(providerName, out var impl))
         {
             return impl;
         }
