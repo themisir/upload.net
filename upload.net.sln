@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Upload.Core", "src\Upload.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Upload.Disk", "src\Upload.Disk\Upload.Disk.csproj", "{13D25046-5108-4CBD-9560-32A7E0A2B556}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Upload.Disk.Test", "tests\Upload.Disk.Test\Upload.Disk.Test.csproj", "{48BF459E-DCFA-452D-A9F6-EC53E1D40738}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,7 +28,12 @@ Global
 		{13D25046-5108-4CBD-9560-32A7E0A2B556}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13D25046-5108-4CBD-9560-32A7E0A2B556}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13D25046-5108-4CBD-9560-32A7E0A2B556}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48BF459E-DCFA-452D-A9F6-EC53E1D40738}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48BF459E-DCFA-452D-A9F6-EC53E1D40738}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48BF459E-DCFA-452D-A9F6-EC53E1D40738}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48BF459E-DCFA-452D-A9F6-EC53E1D40738}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{48BF459E-DCFA-452D-A9F6-EC53E1D40738} = {3FD0597A-B3FC-47CA-8953-426E101D9D0D}
 	EndGlobalSection
 EndGlobal

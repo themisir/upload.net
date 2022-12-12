@@ -24,15 +24,9 @@ public static class KeyUtils
     
     public static void MushBeSafeKey(string key)
     {
-        if (!IsSafeKey(key))
+        if (key.Contains(".."))
         {
-            throw new ApplicationException("Provided object key is not considered safe");
+            throw new ApplicationException("Key should not contain '..'");
         }
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsSafeKey(string key)
-    {
-        return key.Contains("..");
     }
 }

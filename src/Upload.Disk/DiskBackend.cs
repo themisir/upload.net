@@ -17,6 +17,9 @@ public sealed class DiskBackend : IStorageBackend
     {
         var fileRef = CreateRef(bucket, key);
 
+        // create output directory unless already exists
+        Directory.CreateDirectory(Path.GetDirectoryName(fileRef.Path)!);
+
         await using var fs = TryGuessSize(sourceStream, out var bufferSize)
             ? File.Create(fileRef.Path, bufferSize)
             : File.Create(fileRef.Path);
