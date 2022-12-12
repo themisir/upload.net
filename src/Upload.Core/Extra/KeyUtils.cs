@@ -1,5 +1,3 @@
-using System.Runtime.CompilerServices;
-
 namespace Upload.Core.Extra;
 
 public static class KeyUtils
