@@ -1,10 +1,9 @@
-using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Upload.Core;
 
 namespace Upload.Disk.Test;
 
-public sealed class DiskBackendTest
+public sealed class DiskBackendTests
 {
     private string _tempDir = null!;
     private IStorageBackend _backend = null!;
@@ -23,7 +22,7 @@ public sealed class DiskBackendTest
     }
 
     [Test]
-    public async Task CreateFileTest()
+    public async Task TestCreateFile()
     {
         var uploadContents = "sample content"u8.ToArray();
 
@@ -38,7 +37,7 @@ public sealed class DiskBackendTest
     }
 
     [Test]
-    public async Task GetFileTest()
+    public async Task TestGetFile()
     {
         var uploadContents = "sample content"u8.ToArray();
 
