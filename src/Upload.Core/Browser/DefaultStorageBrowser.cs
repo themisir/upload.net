@@ -1,20 +1,19 @@
-using Microsoft.Extensions.Options;
 using Upload.Core.Service;
 
 namespace Upload.Core.Browser;
 
-public sealed class DefaultStorageBrowser : IStorageBrowser
+public readonly struct DefaultStorageBrowser : IStorageBrowser
 {
-    private readonly IOptions<DefaultStorageBrowserOptions> _options;
+    private readonly string _urlFormat;
 
-    public DefaultStorageBrowser(IOptions<DefaultStorageBrowserOptions> options)
+    public DefaultStorageBrowser(string urlFormat)
     {
-        _options = options;
+        _urlFormat = urlFormat;
     }
 
     public string GetFileUrl(string fileKey)
     {
-        var url = _options.Value.UrlFormat.Replace("{key}", fileKey);
+        var url = _urlFormat.Replace("{key}", fileKey);
         return url;
     }
 }

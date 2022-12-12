@@ -6,11 +6,11 @@ namespace Upload.Core;
 
 public static class ServiceExtensions
 {
-    public static IServiceCollection AddUploadNet(this IServiceCollection services, Action<StorageBuilder> configure)
+    public static StorageBuilder AddUploadNet(this IServiceCollection services)
     {
-        var builder = new StorageBuilder(services);
-        configure(builder);
-        services.AddSingleton(new StorageManager(builder));
-        return services;
+        services.Configure<StorageManagerOptions>(_ => { });
+        services.AddSingleton<StorageManager>();
+        
+        return new StorageBuilder(services);
     }
 }

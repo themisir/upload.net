@@ -1,19 +1,15 @@
-using System.Collections.Immutable;
+using Microsoft.Extensions.Options;
 using Upload.Core.Service;
 
 namespace Upload.Core;
 
 public sealed class StorageManager
 {
-    private readonly IReadOnlyDictionary<string, IStorageProvider> _providers;
+    private readonly IOptions<StorageManagerOptions> _options;
 
-    public StorageManager(StorageBuilder builder) : this(builder.Providers.ToImmutableDictionary())
+    public StorageManager(IOptions<StorageManagerOptions> options)
     {
-    }
-    
-    public StorageManager(IReadOnlyDictionary<string, IStorageProvider> providers)
-    {
-        _providers = providers;
+        _options = options;
     }
 
     public Task<IFileRef> CreateFile(string backend, string key, Stream sourceStream, UploadOptions? options = null)
@@ -28,7 +24,7 @@ public sealed class StorageManager
 
     private IStorageProvider GetProvider(string backend)
     {
-        if (_providers.TryGetValue(backend, out var impl))
+        if (_options.Value.Providers.TryGetValue(backend, out var impl))
         {
             return impl;
         }
