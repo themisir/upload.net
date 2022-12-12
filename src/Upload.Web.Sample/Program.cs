@@ -1,3 +1,4 @@
+using Upload.AwsS3;
 using Upload.Core;
 using Upload.Core.Browser;
 using Upload.Core.Web;
@@ -7,10 +8,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 var tempDir = Directory.CreateTempSubdirectory().FullName;
 
+builder.Services.AddAmazonS3(builder.Configuration.GetSection("AmazonS3"));
+
 builder.Services.AddUploadNet()
-    .AddDiskBackend("disk", options =>
+    .AddAwsS3("shared", options =>
     {
-        options.Browser = new DefaultStorageBrowser("http://localhost:5000/files/{key}");
+        options.BucketName = builder.Configuration["UploadNet:Shared:BucketName"]!;
+        options.Browser = new DefaultStorageBrowser(builder.Configuration["UploadNet:Shared:UrlFormat"]!);
+    })
+    .AddDiskBackend("local", options =>
+    {
+        options.Browser = new DefaultStorageBrowser(builder.Configuration["UploadNet:Local:UrlFormat"]!);
         options.Directory = tempDir;
     });
 
@@ -18,8 +26,10 @@ var app = builder.Build();
 
 app.UseStaticFiles();
 
-app.MapUploadManyFiles("/uploads/disk", "disk");
-app.MapUploadedStaticFiles("/files", "disk");
+app.MapUploadManyFiles("/uploads/local", "local");
+app.MapUploadManyFiles("/uploads/shared", "shared");
+
+app.MapUploadedStaticFiles("/files", "local");
 
 app.MapFallbackToFile("index.html");
 

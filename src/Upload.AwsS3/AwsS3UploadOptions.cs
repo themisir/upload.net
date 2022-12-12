@@ -20,6 +20,8 @@ public sealed class AwsS3UploadOptions : UploadOptions
             {
                 CannedACL = CannedAcl,
                 StorageClass = S3StorageClass,
+                // R2 doesn't work without this 
+                DisablePayloadSigning = true
             };
 
         request.Key = key;

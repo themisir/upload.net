@@ -14,6 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Upload.AwsS3\Upload.AwsS3.csproj" />
       <ProjectReference Include="..\Upload.Core\Upload.Core.csproj" />
       <ProjectReference Include="..\Upload.Disk\Upload.Disk.csproj" />
     </ItemGroup>
