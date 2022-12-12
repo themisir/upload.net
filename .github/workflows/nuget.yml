@@ -1,10 +1,7 @@
-
 name: NuGet
 
 on:
   push:
-    branches: [ main ]
-    # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
 
 jobs:
@@ -38,6 +35,13 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
+    - name: Update Version
+      uses: justalemon/VersionPatcher@v0.5
+      with:
+        version: ${{ github.ref }}
+        trim: true
+        use-tag: true
+        csproj-files: src/**/*.csproj
     - name: Publish
       uses: brandedoutcast/publish-nuget@v2.5.5
       with:
