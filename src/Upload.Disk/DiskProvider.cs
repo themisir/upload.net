@@ -1,21 +1,23 @@
-using Microsoft.Extensions.Options;
 using Upload.Core;
 using Upload.Core.Extra;
+using Upload.Core.Service;
 
 namespace Upload.Disk;
 
-public sealed class DiskBackend : IStorageBackend
+public sealed class DiskProvider : IStorageProvider
 {
-    private readonly IOptions<DiskBackendSettings> _settings;
+    private readonly DiskProviderSettings _settings;
+    private readonly IStorageBrowser? _browser;
 
-    public DiskBackend(IOptions<DiskBackendSettings> settings)
+    public DiskProvider(DiskProviderSettings settings)
     {
         _settings = settings;
+        _browser = settings.Browser;
     }
 
-    public async Task<IFileRef> CreateFile(string bucket, string key, Stream sourceStream, UploadOptions? options = null)
+    public async Task<IFileRef> CreateFile(string key, Stream sourceStream, UploadOptions? options = null)
     {
-        var fileRef = CreateRef(bucket, key);
+        var fileRef = CreateRef(key);
 
         // create output directory unless already exists
         Directory.CreateDirectory(Path.GetDirectoryName(fileRef.Path)!);
@@ -29,21 +31,22 @@ public sealed class DiskBackend : IStorageBackend
         return fileRef;
     }
 
-    public Task<IFileRef?> GetFile(string bucket, string key)
+    public Task<IFileRef?> GetFile(string key)
     {
-        var fileRef = CreateRef(bucket, key);
+        var fileRef = CreateRef(key);
         return Task.FromResult<IFileRef?>(
             File.Exists(fileRef.Path) 
                 ? fileRef 
                 : null);
     }
 
-    private DiskFileRef CreateRef(string bucket, string key)
+    private DiskFileRef CreateRef(string key)
     {
         KeyUtils.MushBeSafeKey(key);
         var normalizedKey = KeyUtils.NormalizeKey(key);
-        var path = Path.Combine(_settings.Value.Directory, bucket, normalizedKey);
-        return new DiskFileRef(path, bucket, normalizedKey);
+        var path = Path.Combine(_settings.Directory, normalizedKey);
+        var url = _browser?.GetFileUrl(normalizedKey);
+        return new DiskFileRef(path, normalizedKey, url);
     }
 
     private static bool TryGuessSize(Stream stream, out int size)

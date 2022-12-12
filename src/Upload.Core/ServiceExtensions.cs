@@ -5,12 +5,11 @@ namespace Upload.Core;
 
 public static class ServiceExtensions
 {
-    public static IServiceCollection AddDefaultStorageBrowser(this IServiceCollection services, Action<DefaultStorageBrowserSettings> configure)
+    public static IServiceCollection AddUploadNet(this IServiceCollection services, Action<StorageBuilder> configure)
     {
-        services.Configure(configure);
-        
-        services.AddSingleton<IStorageBrowser, DefaultStorageBrowser>();
-        
+        var builder = new StorageBuilder(services);
+        configure(builder);
+        services.AddSingleton(new StorageManager(builder));
         return services;
     }
 }

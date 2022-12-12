@@ -1,18 +1,18 @@
-using Microsoft.Extensions.DependencyInjection;
 using Upload.Core;
+using Upload.Core.Service;
 
 namespace Upload.Disk.Test;
 
 public sealed class DiskBackendTests
 {
     private string _tempDir = null!;
-    private IStorageBackend _backend = null!;
+    private IStorageProvider _provider = null!;
 
     [SetUp]
     public void SetUp()
     {
         _tempDir = Directory.CreateTempSubdirectory().FullName;
-        _backend = CreateBackend(_tempDir);
+        _provider = CreateBackend(_tempDir);
     }
 
     [TearDown]
@@ -24,16 +24,12 @@ public sealed class DiskBackendTests
     [Test]
     public async Task TestCreateFile()
     {
-        var uploadContents = "sample content"u8.ToArray();
-
-        using var ms = new MemoryStream(uploadContents);
-
-        var file = await _backend.CreateFile("myBucket", "01\\test.txt", ms, UploadOptions.Default);
-        file.Bucket.Should().Be("myBucket");
+        using var ms = new MemoryStream(Array.Empty<byte>());
+        var file = await _provider.CreateFile("01\\test.txt", ms, UploadOptions.Default);
+        var fileExists = File.Exists(Path.Join(_tempDir, "01/test.txt"));
+        
         file.Key.Should().Be("01/test.txt");
-
-        var actualContents = await File.ReadAllBytesAsync(Path.Join(_tempDir, "myBucket/01/test.txt"));
-        actualContents.Should().BeEquivalentTo(uploadContents);
+        fileExists.Should().BeTrue();
     }
 
     [Test]
@@ -43,13 +39,11 @@ public sealed class DiskBackendTests
 
         using var ms = new MemoryStream(uploadContents);
 
-        await _backend.CreateFile("myBucket2", "02/test.bin", ms, UploadOptions.Default);
+        await _provider.CreateFile("02/test.bin", ms, UploadOptions.Default);
         
-        var file = await _backend.GetFile("myBucket2", "02/test.bin");
-        
+        var file = await _provider.GetFile("02/test.bin");
         file.Should().NotBeNull();
-        file!.Bucket.Should().Be("myBucket2");
-        file.Key.Should().Be("02/test.bin");
+        file!.Key.Should().Be("02/test.bin");
 
         await using var stream = await file.OpenRead();
         stream.Should().BeReadable();
@@ -60,14 +54,26 @@ public sealed class DiskBackendTests
 
         readContents.Should().BeEquivalentTo(uploadContents);
     }
-    
-    private static IStorageBackend CreateBackend(string dir)
+
+    [Test]
+    public async Task TestDeleteFile()
     {
-        return new ServiceCollection().AddDiskBackend(options =>
-            {
-                options.Directory = dir;
-            })
-            .BuildServiceProvider()
-            .GetRequiredService<IStorageBackend>();
+        using var ms = new MemoryStream(Array.Empty<byte>());
+        await _provider.CreateFile("03/test", ms, UploadOptions.Default);
+        
+        var file = await _provider.GetFile("03/test");
+        var deleted = await file!.Delete();
+        var fileExists = File.Exists(Path.Join(_tempDir, "03/test"));
+
+        deleted.Should().BeTrue();
+        fileExists.Should().BeFalse();
+    }
+    
+    private static IStorageProvider CreateBackend(string dir)
+    {
+        return new DiskProvider(new DiskProviderSettings
+        {
+            Directory = dir,
+        });
     }
 }

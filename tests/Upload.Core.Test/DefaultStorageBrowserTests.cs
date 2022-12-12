@@ -1,36 +1,30 @@
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
+using Upload.Core.Browser;
+using Upload.Core.Service;
 
 namespace Upload.Core.Test;
 
 public class DefaultStorageBrowserTests
 {
     [Test]
-    public async Task TestGetPublicUrl()
+    public void TestGetPublicUrl()
     {
-        var mock = new Mock<IFileRef>();
-
-        const string bucket = "bucketName";
         const string key = "key/to/the/file-01.png";
 
-        mock.Setup(file => file.Bucket)
-            .Returns(bucket);
+        var browser = CreateBrowser("https://example.com/prefix/objects/{key}");
+        var url = browser.GetFileUrl(key);
 
-        mock.Setup(file => file.Key)
-            .Returns(key);
-
-        var browser = CreateBrowser("https://example.com/prefix/{bucket}/objects/{key}");
-        var url = await browser.GetPublicUrl(mock.Object);
-
-        url.Should().Be($"https://example.com/prefix/{bucket}/objects/{key}");
+        url.Should().Be($"https://example.com/prefix/objects/{key}");
     }
     
     private static IStorageBrowser CreateBrowser(string format)
     {
-        return new ServiceCollection().AddDefaultStorageBrowser(options =>
+        return new ServiceCollection()
+            .Configure<DefaultStorageBrowserSettings>(options =>
             {
                 options.UrlFormat = format;
             })
+            .AddSingleton<IStorageBrowser, DefaultStorageBrowser>()
             .BuildServiceProvider()
             .GetRequiredService<IStorageBrowser>();
     }

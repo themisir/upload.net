@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Options;
+using Upload.Core.Service;
 
 namespace Upload.Core.Browser;
 
@@ -11,12 +12,9 @@ public sealed class DefaultStorageBrowser : IStorageBrowser
         _settings = settings;
     }
 
-    public ValueTask<string> GetPublicUrl(IFileRef fileRef)
+    public string GetFileUrl(string fileKey)
     {
-        var url = _settings.Value.UrlFormat
-            .Replace("{bucket}", fileRef.Bucket)
-            .Replace("{key}", fileRef.Key);
-        
-        return ValueTask.FromResult(url);
+        var url = _settings.Value.UrlFormat.Replace("{key}", fileKey);
+        return url;
     }
 }

@@ -6,35 +6,35 @@ internal readonly struct DiskFileRef : IFileRef
 {
     internal readonly string Path;
 
-    public DiskFileRef(string path, string bucket, string key)
+    public DiskFileRef(string path, string key, string? url)
     {
         Path = path;
-        Bucket = bucket;
         Key = key;
+        Url = url;
     }
 
-    public string Bucket { get; }
     public string Key { get; }
-    
-    public Task<Stream> OpenRead()
+    public string? Url { get; }
+
+    public ValueTask<Stream> OpenRead()
     {
-        return Task.FromResult<Stream>(new FileStream(Path, FileMode.Open));
+        return ValueTask.FromResult<Stream>(new FileStream(Path, FileMode.Open));
     }
 
-    public Task<bool> Delete()
+    public ValueTask<bool> Delete()
     {
         try
         {
             File.Delete(Path);
-            return TrueTask;
+            return ValueTask.FromResult(true);
         }
         catch (Exception)
         {
             // todo: log the exception
-            return FalseTask;
+            return ValueTask.FromResult(false);
         }
     }
 
-    private static readonly Task<bool> TrueTask = Task.FromResult(true);
-    private static readonly Task<bool> FalseTask = Task.FromResult(false);
+    private static readonly ValueTask<bool> TrueTask = ValueTask.FromResult(true);
+    private static readonly ValueTask<bool> FalseTask = ValueTask.FromResult(false);
 }
