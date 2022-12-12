@@ -2,11 +2,11 @@ namespace Upload.Core.Service;
 
 public sealed class StorageManagerOptions
 {
-    public Dictionary<string, IStorageProvider> Providers { get; } = new();
+    public Dictionary<string, Func<IServiceProvider, IStorageProvider>> ProviderFactories { get; } = new();
 
-    public void AddProvider(string name, IStorageProvider provider)
+    public void AddProvider(string name, Func<IServiceProvider, IStorageProvider> factory)
     {
-        if (!Providers.TryAdd(name, provider))
+        if (!ProviderFactories.TryAdd(name, factory))
         {
             throw new ApplicationException($"A storage backend with name '{name}' is already configured");
         }

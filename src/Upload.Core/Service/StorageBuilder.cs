@@ -15,13 +15,13 @@ public sealed class StorageBuilder
     /// Register a storage provider with given <paramref name="name"/>.
     /// </summary>
     /// <param name="name">Unique provider name</param>
-    /// <param name="provider">An instance of the provider</param>
+    /// <param name="factory">An factory to instantiate a provider instance</param>
     /// <returns>Self reference for chaining commands</returns>
-    public StorageBuilder AddProvider(string name, IStorageProvider provider)
+    public StorageBuilder AddProvider(string name, Func<IServiceProvider, IStorageProvider> factory)
     {
         Services.Configure<StorageManagerOptions>(options =>
         {
-            options.AddProvider(name, provider);
+            options.AddProvider(name, factory);
         });
 
         return this;

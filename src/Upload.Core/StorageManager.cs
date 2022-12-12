@@ -10,10 +10,17 @@ namespace Upload.Core;
 public sealed class StorageManager
 {
     private readonly IOptions<StorageManagerOptions> _options;
+    private readonly IDictionary<string, IStorageProvider> _providers;
 
-    public StorageManager(IOptions<StorageManagerOptions> options)
+    public StorageManager(IOptions<StorageManagerOptions> options, IServiceProvider serviceProvider)
     {
         _options = options;
+        _providers = new Dictionary<string, IStorageProvider>(options.Value.ProviderFactories.Count);
+
+        foreach (var kv in options.Value.ProviderFactories)
+        {
+            _providers[kv.Key] = kv.Value(serviceProvider);
+        }
     }
 
     /// <summary>
@@ -45,7 +52,7 @@ public sealed class StorageManager
 
     public bool TryGetProvider(string providerName, [MaybeNullWhen(false)] out IStorageProvider provider)
     {
-        return _options.Value.Providers.TryGetValue(providerName, out provider);
+        return _providers.TryGetValue(providerName, out provider);
     }
 
     private IStorageProvider GetProvider(string providerName)
