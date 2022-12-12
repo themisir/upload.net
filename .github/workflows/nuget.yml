@@ -8,16 +8,30 @@ on:
     tags: [ 'v*.*.*' ]
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
-  
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+      
+  publish:
+    needs: [ build ]
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         package:
           - "Upload.Core"
           - "Upload.Disk"
           - "Upload.AwsS3"
-
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -27,7 +41,7 @@ jobs:
     - name: Publish
       uses: brandedoutcast/publish-nuget@v2.5.5
       with:
-        PROJECT_FILE_PATH: src/${{ matrix.package }}/${{ matrix.package }}.cproj
+        PROJECT_FILE_PATH: src/${{ matrix.package }}/${{ matrix.package }}.csproj
         PACKAGE_NAME: ${{ matrix.package }}
         NUGET_KEY: ${{ secrets.NUGET_TOKEN }}
         INCLUDE_SYMBOLS: true
