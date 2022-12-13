@@ -16,7 +16,7 @@ builder.Services.AddUploadNet()
         options.BucketName = builder.Configuration["UploadNet:Shared:BucketName"]!;
         options.Browser = new DefaultStorageBrowser(builder.Configuration["UploadNet:Shared:UrlFormat"]!);
     })
-    .AddDiskBackend("local", options =>
+    .AddDiskProvider("local", options =>
     {
         options.Browser = new DefaultStorageBrowser(builder.Configuration["UploadNet:Local:UrlFormat"]!);
         options.Directory = tempDir;

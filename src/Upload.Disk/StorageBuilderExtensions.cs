@@ -11,9 +11,9 @@ public static class StorageBuilderExtensions
     /// <param name="name">Unique provider name</param>
     /// <param name="configure">Configuration delegate</param>
     /// <returns>Reference to <paramref name="builder"/> to enable command chaining</returns>
-    public static StorageBuilder AddDiskBackend(this StorageBuilder builder, string name, Action<DiskProviderOptions> configure)
+    public static StorageBuilder AddDiskProvider(this StorageBuilder builder, string name, Action<DiskProviderOptions> configure)
     {
-        return AddDiskBackend(builder, name, (_, options) => configure(options));
+        return AddDiskProvider(builder, name, (_, options) => configure(options));
     }
     
     /// <summary>
@@ -23,7 +23,7 @@ public static class StorageBuilderExtensions
     /// <param name="name">Unique provider name</param>
     /// <param name="configure">Configuration delegate</param>
     /// <returns>Reference to <paramref name="builder"/> to enable command chaining</returns>
-    public static StorageBuilder AddDiskBackend(this StorageBuilder builder, string name, Action<IServiceProvider, DiskProviderOptions> configure)
+    public static StorageBuilder AddDiskProvider(this StorageBuilder builder, string name, Action<IServiceProvider, DiskProviderOptions> configure)
     {
         return builder.AddProvider(name, sp =>
         {
