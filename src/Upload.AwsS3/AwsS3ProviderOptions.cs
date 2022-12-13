@@ -1,3 +1,4 @@
+using Amazon.S3;
 using Upload.Core.Browser;
 using Upload.Core.Service;
 
@@ -17,7 +18,14 @@ public sealed class AwsS3ProviderOptions
     public IStorageBrowser? Browser { get; set; }
     
     /// <summary>
-    /// Combine object key with bucket name when generating browsable URLs using the <see cref="Browser"/>.
+    /// Gets or sets whether or not to combine object key with bucket name when generating browsable URLs using
+    /// the <see cref="Browser"/>.
     /// </summary>
     public bool BrowseWithBucket { get; set; }
+    
+    /// <summary>
+    /// Gets or sets custom S3 client instance to be used with this provider. If not set the <see cref="IAmazonS3"/>
+    /// instance from the Dependency Injection container will be used instead.
+    /// </summary>
+    public IAmazonS3? AmazonS3 { get; set; }
 }

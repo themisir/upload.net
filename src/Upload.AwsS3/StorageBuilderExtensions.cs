@@ -31,7 +31,7 @@ public static class StorageBuilderExtensions
         {
             var options = new AwsS3ProviderOptions();
             configure(sp, options);
-            return new AwsS3Provider(sp.GetRequiredService<IAmazonS3>(), options);
+            return new AwsS3Provider(options.AmazonS3 ?? sp.GetRequiredService<IAmazonS3>(), options);
         });
     }
 }
