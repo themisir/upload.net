@@ -13,9 +13,9 @@ public static class StorageBuilderExtensions
     /// <param name="name">Unique provider name</param>
     /// <param name="configure">Configuration delegate</param>
     /// <returns>Reference to <paramref name="builder"/> to enable command chaining</returns>
-    public static StorageBuilder AddAwsS3(this StorageBuilder builder, string name, Action<AwsS3ProviderOptions> configure)
+    public static StorageBuilder AddAwsS3Provider(this StorageBuilder builder, string name, Action<AwsS3ProviderOptions> configure)
     {
-        return AddAwsS3(builder, name, (_, options) => configure(options));
+        return AddAwsS3Provider(builder, name, (_, options) => configure(options));
     }
     
     /// <summary>
@@ -25,7 +25,7 @@ public static class StorageBuilderExtensions
     /// <param name="name">Unique provider name</param>
     /// <param name="configure">Configuration delegate</param>
     /// <returns>Reference to <paramref name="builder"/> to enable command chaining</returns>
-    public static StorageBuilder AddAwsS3(this StorageBuilder builder, string name, Action<IServiceProvider, AwsS3ProviderOptions> configure)
+    public static StorageBuilder AddAwsS3Provider(this StorageBuilder builder, string name, Action<IServiceProvider, AwsS3ProviderOptions> configure)
     {
         return builder.AddProvider(name, sp =>
         {

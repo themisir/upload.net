@@ -11,7 +11,7 @@ var tempDir = Directory.CreateTempSubdirectory().FullName;
 builder.Services.AddAmazonS3(builder.Configuration.GetSection("AmazonS3"));
 
 builder.Services.AddUploadNet()
-    .AddAwsS3("shared", options =>
+    .AddAwsS3Provider("shared", options =>
     {
         options.BucketName = builder.Configuration["UploadNet:Shared:BucketName"]!;
         options.Browser = new DefaultStorageBrowser(builder.Configuration["UploadNet:Shared:UrlFormat"]!);
