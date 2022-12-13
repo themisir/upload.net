@@ -2,6 +2,8 @@
 
     <PropertyGroup>
         <PackageId>Upload.Core</PackageId>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <PackageTags>upload,files,storage,blob,s3</PackageTags>
         <RepositoryUrl>https://github.com/themisir/upload.net</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <TargetFramework>net7.0</TargetFramework>
