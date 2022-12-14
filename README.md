@@ -6,7 +6,7 @@ Take a sneak peek below to see what it feels like to work use `Upload.NET` APIs.
 
 ```csharp
 // save file on a provider called 'public'
-await _storageManager.CreateFile("public", "users/1553/profile.png";, inputStream);
+await _storageManager.CreateFile("public", "users/1553/profile.png", inputStream);
 
 // retrieve file reference to read or delete it
 if (await _storageManager.GetFile("public", "users/1553/profile.png") is { } fileRef) {
