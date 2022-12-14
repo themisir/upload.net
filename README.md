@@ -14,13 +14,33 @@ if (await _storageManager.GetFile("public", "users/1553/profile.png") is { } fil
 }
 ```
 
-## Installation
+## Getting Started
 
-Packages are available to download from NuGet:
+Packages are available to download from NuGet, choose and download at least one of the provider packages.
 
 - [Upload.Core](https://www.nuget.org/packages/Upload.Core/) - Core abstraction, included as part of the other provider packages
 - [Upload.Disk](https://www.nuget.org/packages/Upload.Disk/) - File system based implementation of the storage system
 - [Upload.AwsS3](https://www.nuget.org/packages/Upload.AwsS3/) - S3 compatible system implemented using AWS S3 SDK
+
+You can add upload net services to a service collection using `AddUploadNet` extension method. It will return a builder that you can use to register various storage providers.
+
+```csharp
+builder.Services.AddUploadNet()
+    .AddDiskProvider("primary", options =>
+    {
+        options.Browser = new DefaultStorageBrowser("http://localhost:5000/download/{key}");
+        options.Directory = "/data";
+    });
+    
+var app = builder.Build();
+    
+app.MapUploadManyFiles("/upload", "primary");
+app.MapUploadedStaticFile("/download", "primary");
+```
+
+#### Next up:
+
+Check out [endpoints](#endpoints) section to find out about useful endpoints to quickly add API routes for doing stuff like uploading files or serving the uploaded files.
 
 ## Core concepts
 
