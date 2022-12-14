@@ -4,6 +4,7 @@
         <PackageId>Upload.Disk</PackageId>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageTags>upload,files,storage,blob,s3</PackageTags>
+        <Description>File system based storage provider for Storage.NET</Description>
         <RepositoryUrl>https://github.com/themisir/upload.net</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <TargetFramework>net7.0</TargetFramework>
