@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -9,27 +10,29 @@ namespace Upload.Disk;
 
 public static class RouterExtensions
 {
-    public static IEndpointConventionBuilder MapUploadedStaticFiles(this IEndpointRouteBuilder endpoints, string path, string providerName)
+    public static IEndpointConventionBuilder MapUploadedStaticFiles(this IEndpointRouteBuilder endpoints,
+        [StringSyntax("Route")] string routePrefix, string providerName)
     {
         var manager = endpoints.ServiceProvider.GetRequiredService<StorageManager>();
         if (manager.TryGetProvider(providerName, out var provider) &&
             provider is DiskProvider diskProvider)
         {
-            return MapStaticFiles(endpoints, path, diskProvider.Options.Directory);
+            return MapStaticFiles(endpoints, routePrefix, diskProvider.Options.Directory);
         }
 
         throw new ApplicationException($"There is no DiskProvider registered with name '{providerName}'");
     }
 
-    public static IEndpointConventionBuilder MapStaticFiles(this IEndpointRouteBuilder endpoints, string path, string rootDirectory)
+    public static IEndpointConventionBuilder MapStaticFiles(this IEndpointRouteBuilder endpoints,
+        [StringSyntax("Route")] string routePrefix, string rootDirectory)
     {
-        var pattern = Path.Join(path, "{**slug}");
+        var pattern = Path.Join(routePrefix, "{**slug}");
         var handler = endpoints.CreateApplicationBuilder()
             .Use(IgnoreEndpoint)
             .UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(rootDirectory),
-                RequestPath = path
+                RequestPath = routePrefix
             })
             .Build();
 
