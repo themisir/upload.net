@@ -7,9 +7,9 @@
         <Description>File system based storage provider for Storage.NET</Description>
         <RepositoryUrl>https://github.com/themisir/upload.net</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>

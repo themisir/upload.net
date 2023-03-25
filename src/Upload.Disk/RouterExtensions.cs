@@ -11,7 +11,10 @@ namespace Upload.Disk;
 public static class RouterExtensions
 {
     public static IEndpointConventionBuilder MapUploadedStaticFiles(this IEndpointRouteBuilder endpoints,
-        [StringSyntax("Route")] string routePrefix, string providerName)
+#if NET7_0_OR_GREATER
+        [StringSyntax("Route")]
+#endif
+        string routePrefix, string providerName)
     {
         var manager = endpoints.ServiceProvider.GetRequiredService<StorageManager>();
         if (manager.TryGetProvider(providerName, out var provider) &&
@@ -24,7 +27,10 @@ public static class RouterExtensions
     }
 
     public static IEndpointConventionBuilder MapStaticFiles(this IEndpointRouteBuilder endpoints,
-        [StringSyntax("Route")] string routePrefix, string rootDirectory)
+#if NET7_0_OR_GREATER
+        [StringSyntax("Route")]
+#endif
+        string routePrefix, string rootDirectory)
     {
         var pattern = Path.Join(routePrefix, "{**slug}");
         var handler = endpoints.CreateApplicationBuilder()
