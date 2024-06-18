@@ -32,7 +32,10 @@ public static class RouterExtensions
 #endif
         string routePrefix, string rootDirectory)
     {
-        var pattern = Path.Join(routePrefix, "{**slug}");
+        var pattern = routePrefix.EndsWith('/')
+            ? routePrefix + "{**slug}"
+            : routePrefix + "/{**slug}";
+
         var handler = endpoints.CreateApplicationBuilder()
             .Use(IgnoreEndpoint)
             .UseStaticFiles(new StaticFileOptions
