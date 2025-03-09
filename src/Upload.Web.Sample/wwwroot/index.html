@@ -9,13 +9,13 @@
 </head>
 <body>
     <h2>Local</h2>
-    <form method="post" action="/uploads/local" enctype="multipart/form-data">
+    <form method="post" action="/uploads/local?dir=abc" enctype="multipart/form-data">
         <input type="file" name="files" multiple />
         <button type="submit">upload</button>
     </form>
 
-    <h2>Local (nested directory 'test')</h2>
-    <form method="post" action="/uploads/local?dir=test" enctype="multipart/form-data">
+    <h2>Local (nested directory 'sub1')</h2>
+    <form method="post" action="/uploads/local-with-sub-dirs?dir=sub1" enctype="multipart/form-data">
         <input type="file" name="files" multiple />
         <button type="submit">upload</button>
     </form>

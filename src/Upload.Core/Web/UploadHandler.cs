@@ -8,12 +8,16 @@ internal sealed class UploadHandler
 {
     private readonly StorageManager _storageManager;
     private readonly string _providerName;
+    private readonly bool _allowSubDirectories;
 
     private readonly record struct UploadedFileDto(string Name, string? Url);
 
-    public UploadHandler(IServiceProvider serviceProvider, string providerName)
+    public UploadHandler(IServiceProvider serviceProvider,
+        string providerName,
+        bool allowSubDirectories)
     {
         _providerName = providerName;
+        _allowSubDirectories = allowSubDirectories;
         _storageManager = serviceProvider.GetRequiredService<StorageManager>();
     }
 
@@ -24,10 +28,16 @@ internal sealed class UploadHandler
 
         var result = new List<UploadedFileDto>(files.Count);
 
-        var uploadPathParam = context.Request.Query["dir"].ToString();
-        var uploadPath = string.IsNullOrWhiteSpace(uploadPathParam)
+        if (context.Request.Query.TryGetValue("dir", out var dirParam) && !_allowSubDirectories)
+        {
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            await context.Response.WriteAsync("Subdirectories are not allowed");
+            return;
+        }
+
+        var uploadPath = string.IsNullOrWhiteSpace(dirParam.ToString())
             ? null
-            : uploadPathParam.TrimStart(Path.DirectorySeparatorChar); // Don't allow to upload to root directory
+            : dirParam.ToString().TrimStart(Path.DirectorySeparatorChar); // Don't allow to upload to root directory
 
         foreach (var file in files)
         {
