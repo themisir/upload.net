@@ -11,9 +11,10 @@ public static class RouterExtensions
         [StringSyntax("Route")]
 #endif
         string pattern,
-        string providerName)
+        string providerName,
+        bool allowSubDirectories = false)
     {
-        var handler = new UploadHandler(builder.ServiceProvider, providerName);
+        var handler = new UploadHandler(builder.ServiceProvider, providerName, allowSubDirectories);
         return builder.MapPost(pattern, handler.UploadManyFiles);
     }
 }

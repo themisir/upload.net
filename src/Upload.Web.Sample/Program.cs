@@ -26,7 +26,8 @@ var app = builder.Build();
 
 app.UseStaticFiles();
 
-app.MapUploadManyFiles("/uploads/local", "local");
+app.MapUploadManyFiles("/uploads/local", "local", allowSubDirectories: false);
+app.MapUploadManyFiles("/uploads/local-with-sub-dirs", "local", allowSubDirectories: true);
 app.MapUploadManyFiles("/uploads/shared", "shared");
 
 app.MapUploadedStaticFiles("/files", "local");
