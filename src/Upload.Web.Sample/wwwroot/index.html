@@ -14,6 +14,12 @@
         <button type="submit">upload</button>
     </form>
 
+    <h2>Local (nested directory 'test')</h2>
+    <form method="post" action="/uploads/local?dir=test" enctype="multipart/form-data">
+        <input type="file" name="files" multiple />
+        <button type="submit">upload</button>
+    </form>
+
     <h2>Shared</h2>
     <form method="post" action="/uploads/shared" enctype="multipart/form-data">
         <input type="file" name="files" multiple />

@@ -24,13 +24,22 @@ internal sealed class UploadHandler
 
         var result = new List<UploadedFileDto>(files.Count);
 
+        var uploadPathParam = context.Request.Query["dir"].ToString();
+        var uploadPath = string.IsNullOrWhiteSpace(uploadPathParam)
+            ? null
+            : uploadPathParam.TrimStart(Path.DirectorySeparatorChar); // Don't allow to upload to root directory
+
         foreach (var file in files)
         {
             var key = KeyUtils.GetUniqueKey(file.FileName);
-            
+            var fullKey = uploadPath is null
+                ? key : Path.Combine(uploadPath, key);
+
+            KeyUtils.MushBeSafeKey(fullKey);
+
             await using var source = file.OpenReadStream();
-            var fileRef = await _storageManager.CreateFile(_providerName, key, source);
-            
+            var fileRef = await _storageManager.CreateFile(_providerName, fullKey, source);
+
             result.Add(new UploadedFileDto(fileRef.Key, fileRef.Url));
         }
 
